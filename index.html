@@ -7,43 +7,68 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
     <style>
         body {
-            margin: 0; height: 100vh;
-            display: flex; justify-content: center; align-items: center;
+            margin: 0; 
+            height: 100vh;
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            font-family: 'Segoe UI', sans-serif; color: white;
+            font-family: 'Segoe UI', sans-serif; 
+            color: white;
         }
 
         .card {
             background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 40px; border-radius: 24px;
-            text-align: center; width: 280px;
+            padding: 40px; 
+            border-radius: 24px;
+            text-align: center; 
+            width: 280px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.4);
             transform-style: preserve-3d;
+            position: relative;
         }
 
-        #clock { font-size: 0.8rem; opacity: 0.6; margin-bottom: 10px; letter-spacing: 1px; }
-        h1 { margin: 10px 0; font-size: 2rem; }
-        p { opacity: 0.7; margin-bottom: 30px; line-height: 1.5; }
+        #clock { 
+            position: absolute; top: 20px; right: 20px; 
+            font-size: 0.8rem; opacity: 0.6; font-family: monospace;
+        }
+
+        .avatar {
+            width: 120px; height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid rgba(255,255,255,0.2);
+            margin-bottom: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        h1 { margin: 10px 0; font-size: 1.6rem; }
+        p { opacity: 0.7; margin-bottom: 25px; line-height: 1.4; }
 
         .links { display: flex; gap: 10px; justify-content: center; }
         a {
-            padding: 12px 20px; 
+            padding: 10px 16px; 
             background: rgba(255, 255, 255, 0.1);
             border-radius: 12px; color: white; 
             text-decoration: none; font-size: 0.9rem;
-            transition: 0.3s; border: 1px solid rgba(255,255,255,0.1);
+            transition: 0.3s;
         }
         a:hover { background: rgba(255, 255, 255, 0.2); }
     </style>
 </head>
 <body>
 
-    <div class="card" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-gyroscope="true">
+    <div class="card" data-tilt data-tilt-max="10" data-tilt-speed="400">
         <div id="clock">00:00:00</div>
+        
+        <img src="https://arxeus.qd.je/pfp.jpg" alt="Profile" class="avatar">
+        
         <h1>Arxeus</h1>
-        <p>maybe alive idk<br>uhmm.. hobby?</p>
+        <p>uhm... alive?</p>
         <div class="links">
             <a href="https://t.me/arxeus_x" target="_blank">Telegram</a>
             <a href="https://github.com/arxeus-x" target="_blank">GitHub</a>
@@ -52,15 +77,17 @@
 
     <script>
         VanillaTilt.init(document.querySelector(".card"), { 
-            max: 15, 
-            speed: 400, 
-            gyroscope: true,
-            gyroscopeMinAngleX: -45,
-            gyroscopeMaxAngleX: 45
+            max: 10, 
+            speed: 400 
         });
 
         function updateClock() {
-            document.getElementById('clock').innerText = new Date().toLocaleTimeString();
+            const now = new Date();
+            document.getElementById('clock').innerText = now.toLocaleTimeString('ru-RU', {
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit'
+            });
         }
         setInterval(updateClock, 1000);
         updateClock();
