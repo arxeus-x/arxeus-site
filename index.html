@@ -4,71 +4,103 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arxeus</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
     <style>
         body {
-            margin: 0; 
-            height: 100vh;
-            display: flex; 
-            justify-content: center; 
-            align-items: center;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            font-family: 'Segoe UI', sans-serif; 
-            color: white;
+            margin: 0; min-height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            background: #050505;
+            font-family: 'Segoe UI', sans-serif; color: white;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .particle-container {
+            position: absolute; width: 100%; height: 100%;
+            overflow: hidden; z-index: 0; pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            animation: float linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+            50% { opacity: 0.5; }
+            100% { transform: translateY(-10vh) translateX(20px); opacity: 0; }
         }
 
         .card {
-            background: rgba(255, 255, 255, 0.05);
+            width: 100%; max-width: 320px;
+            background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 40px; 
-            border-radius: 24px;
-            text-align: center; 
-            width: 280px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-            transform-style: preserve-3d;
+            padding: 30px; border-radius: 24px;
+            text-align: center;
             position: relative;
+            z-index: 1;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 255, 255, 0.03);
         }
 
         #clock { 
             position: absolute; top: 20px; right: 20px; 
-            font-size: 0.8rem; opacity: 0.6; font-family: monospace;
+            font-size: 0.8rem; opacity: 0.5; font-family: monospace;
         }
 
         .avatar {
             width: 120px; height: 120px;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid rgba(255,255,255,0.2);
-            margin-bottom: 20px;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
+            border: 3px solid rgba(255,255,255,0.1);
+            margin-bottom: 15px;
         }
 
         h1 { margin: 10px 0; font-size: 1.6rem; }
-        p { opacity: 0.7; margin-bottom: 25px; line-height: 1.4; }
 
-        .links { display: flex; gap: 10px; justify-content: center; }
+        .skills { display: flex; gap: 8px; justify-content: center; margin-bottom: 15px; }
+        .skill {
+            padding: 5px 10px; background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px; font-size: 0.7rem; font-weight: bold;
+        }
+
+        .bio { opacity: 0.6; font-size: 0.9rem; margin-bottom: 25px; line-height: 1.4; }
+
+        .links { display: flex; flex-direction: column; gap: 10px; }
         a {
-            padding: 10px 16px; 
-            background: rgba(255, 255, 255, 0.1);
+            padding: 12px; background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px; color: white; 
             text-decoration: none; font-size: 0.9rem;
             transition: 0.3s;
         }
-        a:hover { background: rgba(255, 255, 255, 0.2); }
+        a:hover { background: rgba(255, 255, 255, 0.1); }
     </style>
 </head>
 <body>
 
-    <div class="card" data-tilt data-tilt-max="10" data-tilt-speed="400">
+    <div class="particle-container" id="particles"></div>
+
+    <div class="card">
         <div id="clock">00:00:00</div>
         
         <img src="https://arxeus.qd.je/pfp.jpg" alt="Profile" class="avatar">
         
         <h1>Arxeus</h1>
-        <p>uhm... alive?</p>
+        
+        <div class="skills">
+            <div class="skill">PYTHON</div>
+            <div class="skill">JS</div>
+            <div class="skill">HTML/CSS</div>
+        </div>
+
+        <div class="bio">
+            uhm... exist ? • first
+        </div>
+
         <div class="links">
             <a href="https://t.me/arxeus_x" target="_blank">Telegram</a>
             <a href="https://github.com/arxeus-x" target="_blank">GitHub</a>
@@ -76,17 +108,24 @@
     </div>
 
     <script>
-        VanillaTilt.init(document.querySelector(".card"), { 
-            max: 10, 
-            speed: 400 
-        });
+        const container = document.getElementById('particles');
+        for (let i = 0; i < 20; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            const size = Math.random() * 5 + 2 + 'px';
+            p.style.width = size;
+            p.style.height = size;
+            p.style.left = Math.random() * 100 + '%';
+            const duration = Math.random() * 10 + 10;
+            p.style.animationDuration = duration + 's';
+            p.style.animationDelay = '-' + (Math.random() * duration) + 's';
+            container.appendChild(p);
+        }
 
         function updateClock() {
             const now = new Date();
             document.getElementById('clock').innerText = now.toLocaleTimeString('ru-RU', {
-                hour: '2-digit', 
-                minute: '2-digit', 
-                second: '2-digit'
+                hour: '2-digit', minute: '2-digit', second: '2-digit'
             });
         }
         setInterval(updateClock, 1000);
